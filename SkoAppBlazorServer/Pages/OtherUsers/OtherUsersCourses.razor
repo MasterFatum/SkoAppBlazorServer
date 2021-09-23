@@ -1,0 +1,152 @@
+﻿@page "/OtherUsersCourses"
+@using SkoAppBlazorServer.Data
+@inject CourseService CourseService;
+@inject NavigationManager NavigationManager;
+
+<h3 align="center">Курсы других пользователей</h3>
+<hr />
+<div class="row">
+    <div>
+        <select class="form-control w-auto" @bind="@SelectedUser">
+            <option value="-1">-- Выберите пользователя --</option>
+            @foreach (var item in _allUsers)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+    <div>
+        <button class="btn btn-primary" @onclick="@(() => GetCoursesOnUser(SelectedUser))">Показать</button>
+    </div>
+</div>
+<hr />
+
+<div>
+    Всего пользователей: <b>@_countUsers</b>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-dark">
+        <thead class="thead-dark">
+            <tr>
+                <td class="font-weight-bold">
+                    №
+                </td>
+                <td class="font-weight-bold">
+                    Категория
+                </td>
+                <td class="font-weight-bold">
+                    Название
+                </td>
+                <td class="font-weight-bold">
+                    Дата создания
+                </td>
+                <td class="font-weight-bold">
+                    Дата редактирования
+                </td>
+                <td class="font-weight-bold">
+                    Баллы
+                </td>
+                <td class="font-weight-bold">
+                    Оценивающий
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (_userCourses == null)
+            {
+                <tr>Загрузка...</tr>
+            }
+            else if (_userCourses.Count == 0)
+            {
+                <tr>Нет записей!</tr>
+            }
+            else
+            {
+                int number = 1;
+                @foreach (Course course in _userCourses)
+                {
+                    <tr>
+                        <td>
+                            @number
+                        </td>
+                        <td>
+                            @course.Category
+                        </td>
+                        <td>
+                            @course.Title
+                        </td>
+                        <td>
+                            @course.Date
+                        </td>
+                        <td>
+                            @if (course.DateEdit != null)
+                            {
+                                @course.DateEdit
+                            }
+                            else
+                            {
+                                @ValueIsNull
+                            }
+                        </td>
+                        <td>
+                            @if (course.Evaluation != null)
+                            {
+                                @course.Evaluation
+                            }
+                            else
+                            {
+                                @ValueIsNull
+                            }
+                        </td>
+                        <td>
+                            @if (course.Evaluating != null)
+                            {
+                                @course.Evaluating
+                            }
+                            else
+                            {
+                                @ValueIsNull
+                            }
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-info" @onclick="@(() => ViewCourse(course.Id))">
+                                <span class="oi oi-eye" aria-hidden="true"> Просмотреть</span>
+                            </button>
+                        </td>
+                    </tr>
+                    number++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@code
+{
+    public string ValueIsNull { get; set; } = "-";
+    List<Course> _userCourses = new List<Course>();
+    List<String> _allUsers = new List<String>();
+
+    IEnumerable<User> Users { get; set; }
+
+
+    public string SelectedUser { get; set; } = "-1";
+
+
+    int _countUsers;
+    protected override async Task OnInitializedAsync()
+    {
+        _allUsers = await Task.Run(()=>CourseService.GetAllUsers());
+        _countUsers = _allUsers.Count;
+    }
+
+    public async Task GetCoursesOnUser(string selectedUser)
+    {
+        _userCourses = await Task.Run(() => CourseService.GetCoursesByLastname(selectedUser));
+    }
+
+    void ViewCourse(int id)
+    {
+        NavigationManager.NavigateTo($"/ViewCourseOtherUser/{id}");
+    }
+}
