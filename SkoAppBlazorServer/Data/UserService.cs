@@ -103,6 +103,18 @@ namespace SkoAppBlazorServer.Data
             }
         }
 
+        public int GetUserIdOnEmail(string email)
+        {
+            User user = _skoContext.Users.FirstOrDefault(e => e.Email == email);
+            if (user != null)
+            {
+                int userId = user.Id;
+                return userId;
+            }
+
+            return 0;
+        }
+
         public IEnumerable<User> GetAllUser()
         {
             try

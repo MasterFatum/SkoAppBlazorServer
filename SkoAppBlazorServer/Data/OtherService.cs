@@ -1,8 +1,7 @@
-﻿
-namespace SkoAppBlazorServer.Data
+﻿namespace SkoAppBlazorServer.Data
 {
     public class OtherService
     {
-
+        
     }
 }

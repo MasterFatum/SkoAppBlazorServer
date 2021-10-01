@@ -1,6 +1,8 @@
-﻿@page "/"
+﻿@page "/{Id}"
 @attribute [Authorize]
 @using SkoAppBlazorServer.Data
+@using System.Web;
+@using System.Data;
 @inject CourseService CourseService;
 @inject NavigationManager NavigationManager;
 
@@ -132,6 +134,9 @@
 
 @code
 {
+    [Parameter]
+    public string Id { get; set; }
+
     public string ValueIsNull { get; set; } = "-";
 
     List<Course> _myCourses;
@@ -142,10 +147,12 @@
     int _countCourses;
     string _allRating;
 
+
     protected override async Task OnInitializedAsync()
     {
+
         _listYears = CourseService.GetYears();
-        _myCourses = await Task.Run(() => CourseService.GetCoursesByUserId(1));
+        _myCourses = await Task.Run(() => CourseService.GetCoursesByUserId(Convert.ToInt32(Id)));
 
         _countCourses = _myCourses.Count;
 

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Cloudcrate.AspNetCore.Blazor.Browser.Storage;
 
 namespace SkoAppBlazorServer
 {
@@ -39,6 +40,7 @@ namespace SkoAppBlazorServer
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddStorage();
             services.AddScoped<HttpClient>();
             services.AddScoped<CourseService>();
             services.AddScoped<UserService>();
