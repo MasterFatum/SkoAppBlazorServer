@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,7 @@ namespace SkoAppBlazorServer.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
         }
+
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -89,7 +91,11 @@ namespace SkoAppBlazorServer.Areas.Identity.Pages.Account
                 {
                     userId = new UserService().GetUserIdOnEmail(Input.Email);
 
-                    returnUrl ??= Url.Content($"~/{userId}");
+                    HttpContext.Session.SetInt32("UserIdSession", userId);
+
+                    int? tempUserId = HttpContext.Session.GetInt32("UserIdSession");
+
+                    returnUrl ??= Url.Content($"~/User/Home/{userId}");
 
                     _logger.LogInformation("User logged in.");
                     
