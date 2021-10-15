@@ -90,11 +90,7 @@ namespace SkoAppBlazorServer.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     userId = new UserService().GetUserIdOnEmail(Input.Email);
-
-                    HttpContext.Session.SetInt32("UserIdSession", userId);
-
-                    int? tempUserId = HttpContext.Session.GetInt32("UserIdSession");
-
+                    
                     returnUrl ??= Url.Content($"~/User/Home/{userId}");
 
                     _logger.LogInformation("User logged in.");

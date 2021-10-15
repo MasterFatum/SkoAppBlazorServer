@@ -1,10 +1,10 @@
 ﻿@page "/User/Home/{Id}"
 @attribute [Authorize]
 @using SkoAppBlazorServer.Data
-@using System.Web;
-@using System.Data;
 @inject CourseService CourseService;
 @inject NavigationManager NavigationManager;
+@inject ProtectedSessionStorage ProtectedSessionStore;
+
 
 
 <h3 align="center">Мои курсы</h3>
@@ -150,6 +150,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //await ProtectedSessionStore.SetAsync("UserIdSession", Id);
+        //Id = ProtectedSessionStore.GetAsync<int>("UserIdSession").ToString();
 
         _listYears = CourseService.GetYears();
         _myCourses = await Task.Run(() => CourseService.GetCoursesByUserId(Convert.ToInt32(Id)));
@@ -158,6 +160,7 @@
 
 
         _allRating = CourseService.GetAllRating(1);
+
     }
 
     async void GetCourseOnYear(ChangeEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace SkoAppBlazorServer.Data
 {
@@ -8,6 +9,7 @@ namespace SkoAppBlazorServer.Data
     {
 
         SkoContext _skoContext = new SkoContext();
+        
         public void AddUser(User user)
         {
             try
@@ -102,7 +104,6 @@ namespace SkoAppBlazorServer.Data
                 throw new NotImplementedException();
             }
         }
-
         public int GetUserIdOnEmail(string email)
         {
             User user = _skoContext.Users.FirstOrDefault(e => e.Email == email);

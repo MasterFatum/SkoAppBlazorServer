@@ -33,18 +33,7 @@ namespace SkoAppBlazorServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDistributedMemoryCache();
 
-            services.AddSession(options =>
-            {
-                options.IOTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-                options.Cookie.Name = "SkoSession";
-            }
-                
-                );
-            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -77,9 +66,7 @@ namespace SkoAppBlazorServer
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseSession();
-
+            
             app.UseRouting();
 
             app.UseAuthentication();

@@ -139,7 +139,7 @@ namespace SkoAppBlazorServer.Data
             }
         }
 
-        public async Task<List<Course>> GetCoursesByUserId(int userId, int year)
+        public async Task<List<Course>> GetCoursesByUserId(int? userId, int year)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace SkoAppBlazorServer.Data
             }
         }
 
-        public string GetAllRating(int userId)
+        public string GetAllRating(int? userId)
         {
             try
             {
