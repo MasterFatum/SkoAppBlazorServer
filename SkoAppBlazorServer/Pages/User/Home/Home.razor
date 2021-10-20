@@ -171,15 +171,15 @@
 
     void GoToAddCourse()
     {
-        NavigationManager.NavigateTo("/AddCourse/");
+        NavigationManager.NavigateTo("User/Home/AddCourse/");
     }
     void ViewCourse(int id)
     {
-        NavigationManager.NavigateTo($"/ViewCourse/{id}");
+        NavigationManager.NavigateTo($"User/Home/ViewCourse/{id}");
     }
     void EditCourse(int id)
     {
-        NavigationManager.NavigateTo($"/EditCourse/{id}");
+        NavigationManager.NavigateTo($"User/Home/EditCourse/{id}");
     }
 
 }
